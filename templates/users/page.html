@@ -11,8 +11,9 @@
     {{ user.about | safe }}
     </div>
 
-<div class="costumes">
+
     <h5 class="title">Costumes</h5>
+    <div class="costumes">
     {% for costume in costumes %}
         {% if costume.cover %}
             {% set img_url = "/static/uploads/"+ costume.id|string +"/photo/thumbnails/"+ costume.cover %}
