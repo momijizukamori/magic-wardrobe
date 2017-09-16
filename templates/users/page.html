@@ -24,8 +24,9 @@
         <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
     {% endfor %}
 </div>
+
+<h5 class="title">Tutorials</h5>
 <div class="tutorials">
-    <h5 class="title">Tutorials</h5>
     {% for tutorial in tutorials %}
         <div class="tutorial"><a href="/tutorials/{{tutorial.slug}}">{{ tutorial.title }}</a>
         </div>
