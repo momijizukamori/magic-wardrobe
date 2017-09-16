@@ -28,6 +28,7 @@ app.config.update(dict(
 
 @app.template_filter('sanitize')
 def clean(text):
+    bleach.sanitizer.ALLOWED_TAGS.append("p")
     return bleach.clean(text)
 
 

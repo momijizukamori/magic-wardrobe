@@ -4,10 +4,11 @@
 <h3 class ="title"><img src="/static/images/pattern.svg" class="icon"> {{ tutorial.title }}</h3>
 {{ user_link(tutorial.author) }}
 {% if current_user.is_authenticated and current_user.username == tutorial.author.username %}
-<a href="{{ tutorial.slug }}/edit">Edit tutorial >></a>
+<a href="{{ tutorial.slug }}/edit">Edit tutorial >></a><br>
+<a href="{{ tutorial.slug }}/delete">Delete tutorial >></a>
 {% endif %}
     <div class="tutorial_body">
-    {{tutorial.content | safe }}
+    {{tutorial.content | sanitize | safe }}
     </div>
 
 {% endblock %}

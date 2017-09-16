@@ -16,7 +16,7 @@
 		<h5>{{ day[0].datetime.strftime('%B %e %Y') }}</h5>
 		{% for message in day %}
 			<div class="update">
-			{{message.message | safe  }}
+			{{message.message | sanitize | safe }}
 			<span class="time">{{message.datetime.strftime('%I:%M %p')}}</span>
 			</div>
 		{% endfor %}
