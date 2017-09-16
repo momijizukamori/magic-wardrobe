@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% set photo_class="nophoto" %}
+{% block title %}| {{ form.title.data }}{% endblock %}
+{% block content %}
+{% if slug %}<a href="/tutorials/{{slug}}"> << View tutorial</a>{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.title.label }} {{ form.title(size=20) }}<br />
+    {{ form.content }} 
+    <input type="submit" value="Save">
+
+    <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+    <script>
+        console.log("scripty goodness");
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        var editor = CKEDITOR.replace( 'tutorial_content' );
+
+        editor.on( 'fileUploadRequest', function( evt ) {
+            evt.data.requestData.csrf_token = '{{ form.csrf_token }}';
+            evt.data.requestData.slug = '{{ slug }}';
+            evt.data.requestData.type = '';
+} );
+    </script>
+</form>
+
+{% endblock %}

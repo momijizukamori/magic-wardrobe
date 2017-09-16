@@ -1,0 +1,34 @@
+{% extends "base.html" %} 
+{% set photo_class="nophoto" %}
+{% block title %}| {{ form.display_name.data }}{% endblock %}
+{% block content %}
+{% if slug %}<a href="/cosplayers/{{slug}}"> << View profile</a>{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.id }}
+    {{ form.username.label }} {{ form.username(size=20) }}<br />
+    {{ form.display_name.label }} {{ form.display_name(size=20) }}<br />
+    {{ form.about }}
+{% if request.path is equalto '/cosplayers/new' %}
+{{ form.password.label }} {{ form.password(size=20) }}<br />
+{{ form.confirm.label }} {{ form.confirm(size=20) }}<br />
+{% endif %}
+    <input type="submit" value="Save">
+
+    <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+    <script>
+        console.log("scripty goodness");
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        var editor = CKEDITOR.replace( 'about' );
+
+        editor.on( 'fileUploadRequest', function( evt ) {
+            evt.data.requestData.csrf_token = '{{ form.csrf_token }}';
+            evt.data.requestData.slug = '{{ slug }}';
+            evt.data.requestData.type = '';
+} );
+    </script>
+</form>
+
+{% endblock %}

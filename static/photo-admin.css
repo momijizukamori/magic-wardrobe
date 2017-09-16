@@ -1,0 +1,10 @@
+.thumbnail .module {display: none}
+
+.thumbnail .inline-related h3 { display: inline; background: none; }
+
+.thumbnail .inline-related {display: inline;}
+
+.thumbnail .inline-related h3 span.delete {float: none; position:absolute; left: -195px}
+.thumbnail .inline-related h3 span.delete:hover {background: #fff}
+
+li.thumbnail { display: inline-block; list-style: none; width:200px; height:200px}

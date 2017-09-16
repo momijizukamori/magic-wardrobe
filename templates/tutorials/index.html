@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% set photo_class="nophoto" %}
+{% block title %}| Tutorials{% endblock %}
+{% block content %}
+
+ {% if current_user.is_authenticated %}
+<a href="new">Add tutorial >></a>
+{% endif %}
+<div class="tutorials"
+    {% for tutorial in tutorials %}
+        <div class="tutorial"><a href="{{tutorial.slug}}">{{ tutorial.title }}</a>
+        </div>
+    {% else %}
+    	No tutorials yet!
+    {% endfor %}
+</div>
+{% endblock %}

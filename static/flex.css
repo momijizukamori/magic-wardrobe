@@ -1,0 +1,333 @@
+body {   background: transparent url("/static/images/body_bg.png") repeat scroll 0% 0%;
+overflow-x: hidden;
+overflow-y: scroll;
+}
+
+/* Extra-large screens (default) 
+____________________________________________*/
+
+
+#body {
+  width: 80vw;
+  margin: auto;
+
+}
+
+#nav {
+
+}
+
+#nav .inner {
+  position: fixed;
+  top: 0px;
+  left:0px;
+    display: flex;
+  flex-flow: row;
+  /* This aligns items to the end line on main-axis */
+  justify-content: center;
+  align-items: stretch;
+  background-color: #000;
+  height: 120px;
+  width: 100vw;
+  z-index:5;
+}
+
+
+#wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row;
+  min-height: calc(100vh - 120px);
+  margin-top:120px;
+}
+
+
+
+#photo {
+  background-color: #666;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  height: calc(100vh - 120px);
+  width: calc(100vh - 120px);
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+#photo .inner {
+  position: fixed;
+  top: 120px;
+  width: calc(100vh - 120px);
+  height: calc(100vh - 120px);
+  background-size: cover;
+  background-position: center;
+  background-color: #ddd;
+
+  
+}
+#photo img {
+  height: 100vh;
+  overflow: hidden;
+}
+ #content {
+  flex-grow: 1;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-shadow:#eee 1px 1px;
+    margin:0;
+    background-color:#FFFFFC;
+    min-height: calc(100vh - 120px);
+ }
+
+/* large screens  
+____________________________________________*/
+ @media all and (max-width: 1366px) {
+  #body {
+  width: 100vw;
+  margin: 0;
+}
+ }
+
+/* Medium screens  
+____________________________________________*/
+@media all and (max-width: 800px) {
+
+#body {
+  width: 100vw;
+  margin: 0;
+}
+
+#photo {
+  width: 100vw;
+  height: 100vw;
+}
+
+#photo .inner {
+  position: relative;
+  top: 0px;
+  width: 100vw;
+  height: 100vw;
+}
+
+#wrapper {
+  flex-flow:column;
+}
+
+.menu {flex-shrink: 1;
+font-size: 1rem;}
+}
+
+/* Small screens 
+____________________________________________*/
+@media all and (max-width: 500px) {
+  #nav {position: relative;}
+
+  #nav .inner{
+    flex-flow:column;
+    justify-content: stretch;
+    position: relative;
+    font-size: 1rem;
+    height: auto;
+
+  }
+  #wrapper {
+    /* On small screens, we are no longer using row direction but column */
+    flex-flow: column;
+    margin: 0;
+  }
+ #logo{text-align:center;}
+
+#photo, #photo .inner {
+  display: none;
+}
+}
+
+/* Menu elements 
+____________________________________________*/
+.menu {
+  display: inline-block;
+  color:#ccc;
+  text-transform:none;
+  padding:1em 0;
+  margin: 0;
+  text-align:center;
+}
+
+
+.menu a{
+  display:inline-block;
+  color:#eee;
+  padding:0 15px;
+  text-transform:uppercase;
+  text-decoration: none;
+  font-size:1.5em;
+}
+
+.menu a:hover{
+  display:inline-block;
+  color:#eee;
+  padding:0 15px;
+  text-transform:uppercase;
+  text-decoration: none;
+  font-size:1.5em;
+}
+
+
+.menu:active, .menu:hover {
+  text-decoration:none;
+  background-color:#837790;
+  color:#111;
+  text-shadow:1px 1px #666;
+    box-shadow: 1px 1px #666;
+}
+
+.menu a:hover {text-decoration:none;}
+
+
+.image {
+  display:block;
+  float: left;
+}
+ 
+ /* Costume page elements
+ _________________________________________________*/
+
+.image img:hover, .cosplay img:hover {
+      opacity: 1.0;
+    transition: opacity .55s ease-in-out;
+}
+
+.image img, .cosplay img {
+      opacity: 0.6;
+    transition: opacity 1s ease-in-out;
+    vertical-align:bottom;
+}
+
+.component-item {
+  margin-left: 1rem;
+}
+
+#content img.icon {
+  padding: 0px;
+  width: 3.6rem;
+  height: 3.6rem;
+  vertical-align: top;
+}
+
+#references:after, #photos:after, #photos:before {
+  display: table;
+  content: "";
+  clear: both;
+}
+
+.cosplay {display: inline-block;
+width: 150px;
+height: 250px;
+vertical-align: top;
+text-align: center;
+font-size: 1.2rem;}
+
+/* costume edit page styling 
+______________________________________*/
+.image, .image-preview { position: relative; }
+.delete {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    opacity: 0.4;
+    color: #000;
+    background-color: #ddd;
+    cursor: pointer; /* "hand" cursor */
+    font-size: 2em;
+    padding: 5px;
+    z-index: 2;
+}
+
+.delete:hover{
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    opacity: 0.8;
+}
+
+/* Styling for file inputs 
+__________________________________*/
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 2em;
+    display: inline-block;
+    cursor: pointer; /* "hand" cursor */
+    margin: auto 0;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+
+}
+
+.inputfile:focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+#photo_fileupload, #reference_fileupload {
+    border: #592955 dashed 2px;
+    padding: 5px;
+    margin: 1em 0;
+    text-align: center;
+
+}
+
+.files {
+    text-align: left;
+}
+
+
+
+ /* typography
+ _________________________________________________*/
+
+@import url('Bitter');
+
+
+.title, .update_day h5 {font-family: "Bitter", serif;}
+
+ /* No photo sidebar
+ _________________________________________________*/
+.nophoto #photo, .nophoto #photo .inner {display: none;}
+
+/* CSS for Dragula
+___________________________ */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+

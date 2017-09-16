@@ -1,0 +1,7 @@
+*.pyc
+wardrobe.db
+bin/
+include/
+lib/
+local/
+share/

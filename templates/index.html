@@ -1,0 +1,26 @@
+{% extends "base.html" %} 
+{% block content %}
+
+{% if current_user.is_authenticated %}
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ render_field(form.message)}}
+    <input type="submit" value="Save">
+    
+</form>
+{% endif %}
+
+<div id="updates">
+{% for day in updates %}
+	<div class="update_day">
+		<h5>{{ day[0].datetime.strftime('%B %e %Y') }}</h5>
+		{% for message in day %}
+			<div class="update">
+			{{message.message | safe  }}
+			<span class="time">{{message.datetime.strftime('%I:%M %p')}}</span>
+			</div>
+		{% endfor %}
+	</div>
+{% endfor %}
+	</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% set photo_class="nophoto" %}
+{% block title %}| About{% endblock %}
+{% block content %}
+
+{% if current_user.is_authenticated %}
+<a href="new">Add user >></a>
+{% endif %}
+<h5 class ="title"><img src="/static/images/dressform.svg" class="icon"> The Site</h5>
+Pinned Together is built in Python, using the <a href="http://flask.pocoo.org/">Flask</a> framework. The source code will be available for others some day, maybe, if I ever get it cleaned up and packaged properly. The small icons are from <a href="https://thenounproject.com/smashicons/collection/smashicons-sewing-outline/">The Noun Project</a>, and there are textures from <a href="https://www.toptal.com/designers/subtlepatterns/">Subtle Patterns</a> in a few different spots.
+
+<h5 class ="title"><img src="/static/images/dressform.svg" class="icon"> The Cosplayers</h5>
+ <ul>
+    {% for user in users %}
+        <div class="user"><a href="{{ user.username }}">{{ user.display_name }} </a>
+    {% else %}
+    	No costumes yet!
+    {% endfor %}
+    </ul>
+
+{% endblock %}

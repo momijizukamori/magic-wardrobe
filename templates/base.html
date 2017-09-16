@@ -1,0 +1,50 @@
+{% from '_macros.html' import render_image, render_field, costume_title, user_link %}
+{% set photo = photo|default("/static/18_00_59-2-c.jpg") %}
+{% set photo_class = photo_class|default("") %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" class="js" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<title>Pinned Together {% block title %}{% endblock %}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="https://fonts.googleapis.com/css?family=Bitter|Raleway" rel="stylesheet"> 
+<link type="text/css" rel="stylesheet" media="all" href="/static/flex.css">
+<link type="text/css" rel="stylesheet" media="all" href="/static/normalize.css">
+<link type="text/css" rel="stylesheet" media="all" href="/static/skeleton.css">
+
+{% block head %}{% endblock %}
+
+</head>
+
+<body class="{{ photo_class }}">
+<!-- Logo + menu -->
+<div id="body">
+<div id="nav">
+<div class="inner">
+    <div id="logo"><a href="{{url_for('index')}}" title=""><img src="/static/images/header_logo.png" alt="" width="300"></a></div>
+
+
+        <span class="menu cosplayers first"><a href="{{url_for('user_index')}}">About</a></span>
+        <span class="menu costumes"><a href="{{url_for('costume_index')}}">Costumes</a></span>
+        <span class="menu tutorial last"><a href="{{url_for('tutorial_index')}}">Tutorials</a></span>
+</div>
+</div>
+<div id="wrapper">
+<!-- photo block -->
+<div id="photo">
+<div class="inner" style="background-image:url('{{ photo }}')">
+</div>
+</div>
+
+<!-- content -->
+<div id="content">
+{% block content %}{% endblock %}
+</div>
+</div>
+</div>
+
+</body>
+
+</html>

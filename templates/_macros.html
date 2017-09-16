@@ -1,0 +1,31 @@
+{% macro render_image(image, type, id) %}
+<div class="{{type}} image">
+    {{ image.form.csrf_token}}
+    {{ image.form.id }}
+    {{ image.form.deleted(class="deleted") }}
+    {{ image.form.order(class="order") }}
+    {{ image.form.reordered(class="reordered") }}
+        <img src="/static/uploads/{{id}}/{{type}}/thumbnails/{{ image.filename.data }}">
+       <span class="delete">X</span>
+</div>
+{% endmacro %}
+
+{% macro render_field(field) %}
+  {{ field.label }}
+  {{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro costume_title(name, series, variant) %}
+    {{ name }} -  {{ series }} {{ '[ %s ]' % variant if variant }}
+{% endmacro %}
+
+{% macro user_link(user) %}
+    <a href="/cosplayers/{{user.username}}">{{ user.display_name }}</a> <br />
+{% endmacro %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% set photo_class="nophoto" %}
+{% block content %}
+<h3 class ="title"><img src="/static/images/pattern.svg" class="icon"> {{ tutorial.title }}</h3>
+{{ user_link(tutorial.author) }}
+{% if current_user.is_authenticated and current_user.username == tutorial.author.username %}
+<a href="{{ tutorial.slug }}/edit">Edit tutorial >></a>
+{% endif %}
+    <div class="tutorial_body">
+    {{tutorial.content | safe }}
+    </div>
+
+{% endblock %}

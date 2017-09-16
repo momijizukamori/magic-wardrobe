@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}| {{costume_title(costume.name, costume.series, costume.variant) }}{% endblock %}
+
+{% set photo="/static/uploads/"+ costume.id|string +"/photo/"+ costume.images.photos[0].filename if costume.images.photos[0] %}
+
+{% block content %}
+<h5 class ="title"><img src="/static/images/thread.svg" class="icon"> {{costume_title(costume.name, costume.series, costume.variant) }}</h5>
+{{ user_link(costume.cosplayer) }}
+{% if current_user.is_authenticated and current_user.username == costume.cosplayer.username %}
+<a href="{{ slug }}/edit">Edit costume >></a><br>
+<a href="{{ slug }}/delete">Delete costume >></a>
+{% endif %}
+<div id="photos">
+    {% for photo in costume.images.photos %}
+    <div class="photo image"><a href="/static/uploads/{{ costume.id }}/photo/{{ photo.filename }}"><img src="/static/uploads/{{ costume.id }}/photo/thumbnails/{{ photo.filename }}"></a></div>
+    {% endfor %}
+</div>
+<div id="references">
+    {% for ref in costume.references %}
+    <div class="ref image"><a href="/static/uploads/{{ costume.id }}/ref/{{ ref.filename }}"><img src="/static/uploads/{{ costume.id }}/ref/thumbnails/{{ ref.filename }}"></a></div>
+    {% endfor %}
+</div>
+
+    <div class="row">
+        <div class="six columns"><b>Made In:</b> {{costume.year}}</div>
+        <div class="six columns"><b>Status:</b> {{costume.status}}</div>
+    </div>
+    <div class="notes">
+    <h6>Notes</h6>
+    {{costume.notes}}
+</div>
+
+    <div class="components">
+    <h6>Components</h6>
+    {% for component in costume.components %}
+            <div class="component-item">
+            <h6><b>{{ component.name }}</b></h6>
+            {{ component.text }}
+            </div>
+{% endfor %}
+{% endblock %}
+
+
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+<script>
+$(function () {
+    $( ".image a" ).on( "click", function( event) {
+    $("#photo .inner").attr("style", "background-image: url(" + $( this ).attr("href") + ")");
+    event.preventDefault;
+    return false;
+    });
+})
+</script>
+{% endblock %}

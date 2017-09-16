@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set photo_class="nophoto" %}
+
+{% block content %}
+<h3 class ="title"><img src="/static/images/dressform.svg" class="icon"> {{ user.display_name }}</h3>
+
+{% if current_user.is_authenticated and current_user.username == user.username %}
+<a href="{{ user.username }}/edit">Edit profile >></a>
+{% endif %}
+    <div class="user_body">
+    {{ user.about | safe }}
+    </div>
+
+<div class="costumes">
+    <h5 class="title">Costumes</h5>
+    {% for costume in costumes %}
+        {% if costume.cover %}
+            {% set img_url = "/static/uploads/"+ costume.id|string +"/photo/thumbnails/"+ costume.cover %}
+        {% else %}
+            {% set img_url = "/static/blank.png" %}
+        {% endif %}
+        <div class="cosplay"><a href="/costumes/{{costume.slug}}"><img src="{{ img_url }}"></a>
+        <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
+    {% endfor %}
+</div>
+<div class="tutorials">
+    <h5 class="title">Tutorials</h5>
+    {% for tutorial in tutorials %}
+        <div class="tutorial"><a href="/tutorials/{{tutorial.slug}}">{{ tutorial.title }}</a>
+        </div>
+    {% else %}
+    	No tutorials yet!
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% set photo_class = "nophoto" %}
+{% block title %}| {{ costume_title(form.name.data, form.series.data, form.variant.data) }}{% endblock %}
+{% block content %}
+<a href="/costumes/{{slug}}"> << View costume</a>
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.id }}
+    <div class="row">
+    <div class="twelve columns">{{ render_field(form.name, class="u-full-width") }}</div>
+    </div><div class="row">
+    <div class="six columns">{{ render_field(form.series, class="u-full-width") }}</div>
+    <div class="six columns">{{ render_field(form.variant, class="u-full-width") }}</div>
+    </div>
+    <div id="photo_fileupload" class="row">
+    <div class='files twelve columns' id="photo-files">
+        {% for photo in form.photos %}
+            {{ render_image(photo, "photo", form.id.data) }}
+        {% endfor %}
+
+    </div>
+            {{ form.photo_upload(class="inputfile", multiple="") }}
+            {{ form.photo_upload.label}}
+
+</div>
+
+    <div id="reference_fileupload" class="row">
+    <div class='files twelve columns' id="reference-files">
+    {% for ref in form.references %}
+        {{ render_image(ref, "ref", form.id.data) }}
+    {% endfor %}
+    </div>
+        {{ form.ref_upload(class="inputfile", multiple="") }}
+        {{ form.ref_upload.label }}
+    </div>
+    <div class="row">
+    <div class="six columns">{{ render_field(form.year) }}</div>
+    <div class="six columns">{{ render_field(form.status) }}</div>
+    </div>
+    {{ render_field(form.notes, class="u-full-width") }}
+<div id="components">
+    <h5>Components</h5>
+    {% for component in form.components %}
+    <div class="component">
+        {{ component.form.csrf_token}}
+        {{ component.form.id }}
+        {{ component.form.deleted(class="deleted") }}
+        <div class="row">
+        <div class="six columns">{{ render_field(component.form.name, class="u-full-width") }}</div>
+        </div><div class="row">
+        <div class="twelve columns">{{ render_field(component.form.text, class="u-full-width") }}</div>
+        </div>
+        <a href="javascript:void(0)" class="delete-component">- delete component</a>
+        </div>
+    {% endfor %}
+    </div>
+    <a href="javascript:void(0)" id="add-component">+ Add a component</a>
+
+    <input type="submit" value="Save">
+
+</form>
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+<script src="/static/js/vendor/jquery.ui.widget.js"></script>
+<script src="/static/js/jquery.iframe-transport.js"></script>
+<script src="/static/js/jquery.fileupload.js"></script>
+
+<script>
+$(function () {
+    var photoIndex = {{ form.photos | length() }};
+    var refIndex = {{ form.references | length() }};
+
+    $('#photo_fileupload').fileupload({
+        dataType: 'json',
+        url: '/upload',
+        paramName: 'upload',
+        formData: [
+    {
+        name: 'type',
+        value: 'photo'
+    },
+    {
+        name: 'csrf_token',
+        value: '{{ form.csrf_token }}'
+    }
+],
+        done: function (e, data) {
+            var response = data.result;
+            if ( response.uploaded ) {
+                var last_child = $("#photo-files :last-child .order").attr('value')
+            var order = last_child ? parseInt(last_child) + 100 : 0;
+
+            var item = $(`<div class="image-preview"><span class="preview">
+                    <img src="/static/uploads/photo/thumbnails/${response.fileName}">
+                    </span>
+                <span class="delete">X</span>
+                <input type="hidden" class="order" name="photos-${photoIndex}-order" value="${order}">
+                <input type="hidden" class="filename" name="photos-${photoIndex}-filename" value="${response.fileName}">
+                <input type="hidden" class="deleted" name="photos-${photoIndex}-deleted" value="">
+                <input type="hidden" class="reordered" name="photos-${photoIndex}-reordered" value="">
+                </div>`);
+            $("#photo-files").append(item);
+                        photoIndex++;
+            $('.delete').unbind("click").on('click', function(evt) {
+                var image = $(evt.target.parentElement);
+                image.fadeOut();
+                image.remove();
+                evt.stopPropagation();
+                return false;
+            })
+                    };
+        }
+    });
+
+
+    $('#reference_fileupload').fileupload({
+        dataType: 'json',
+        url: '/upload',
+        paramName: 'upload',
+        formData: [
+    {
+        name: 'type',
+        value: 'ref'
+    },
+    {
+        name: 'csrf_token',
+        value: '{{ form.csrf_token }}'
+    }
+],
+        done: function (e, data) {
+            var response = data.result;
+            if ( response.uploaded ) {
+            var last_child = $("#ref-files :last-child .order").attr('value');
+            var order = last_child ? parseInt(last_child) + 100 : 0;
+
+            var item = $(`<div class="image-preview"><span class="preview">
+                    <img src="/static/uploads/ref/thumbnails/${response.fileName}">
+                    </span>
+                <span class="delete">X</span>
+                <input type="hidden" class="order" name="references-${refIndex}-order" value="${order}">
+                <input type="hidden" class="filename" name="references-${refIndex}-filename" value="${response.fileName}">
+                <input type="hidden" class="deleted" name="references-${refIndex}-deleted" value="">
+                <input type="hidden" class="reordered" name="references-${refIndex}-reordered" value="">
+                </div>`);
+                            refIndex++;
+            $("#reference-files").append(item);
+                $('.delete').unbind("click").on('click', function(evt) {
+                    var image = $(evt.target.parentElement);
+                    image.fadeOut();
+                    image.remove();
+                    evt.stopPropagation();
+                    return false;
+                })
+                    };
+        }
+    });
+
+
+    var componentIndex = {{ form.components | length() }};
+    $('#add-component').unbind("click").on('click', function(evt) {
+        $('#components').append(`
+                <div class="component">
+                <input id="components-${componentIndex}-csrf_token" name="components-${componentIndex}-csrf_token" type="hidden" value="{{form.csrf_token.data}}">
+                <input id="components-${componentIndex}-id" name="components-${componentIndex}-id" type="hidden" value="">
+                <label for="components-${componentIndex}-name">Name</label> <input id="components-${componentIndex}-name" name="components-${componentIndex}-name" size="20" type="text" value=""><br />
+                <label for="components-${componentIndex}-text">Description</label> <br /><textarea id="components-${componentIndex}-text" name="components-${componentIndex}-text" size="20"></textarea><br />
+            </div>`
+        );
+        componentIndex++;
+        evt.stopPropagation();
+        return false;
+    }
+    );
+
+        $('.delete-component').unbind("click").on('click', function(evt) {
+        var component = $(evt.target.parentElement);
+        component.slideUp();
+        component.children('.deleted').attr('value', true);
+        evt.stopPropagation();
+        return false;
+    }
+    );
+
+        $('.delete').unbind("click").on('click', function(evt) {
+        var image = $(evt.target.parentElement);
+        image.fadeOut();
+        image.children('.deleted').attr('value', true);
+        evt.stopPropagation();
+        return false;
+    }
+    );
+
+});
+</script>
+{% endblock %}
+
+<script src='/static/dragula/dragula.min.js'></script>
+<script>
+var drake = dragula([document.getElementById('photo-files'), document.getElementById('reference-files')],
+{
+      accepts: function (el, target, source, sibling) {
+
+    return target == source;
+  }
+  });
+
+drake.on('drop', function(el, target, source, sibling) {
+    console.log('calling the listener');
+    var high;
+    var low;
+    if (sibling && el.previousElementSibling) {
+        console.log("we have both");
+        high = parseInt(sibling.getElementsByClassName('order')[0].value);
+        low = parseInt(el.previousElementSibling.getElementsByClassName('order')[0].value);
+
+        el.getElementsByClassName('order')[0].value = Math.floor((high + low )/ 2);
+        el.getElementsByClassName('reordered')[0].value = true;
+    } else if (sibling) {
+        high = parseInt(sibling.getElementsByClassName('order')[0].value);
+        el.getElementsByClassName('order')[0].value = Math.floor(high / 2);
+        el.getElementsByClassName('reordered')[0].value = true;
+    } else if ( el.previousElementSibling ) {
+        low = parseInt(el.previousElementSibling.getElementsByClassName('order')[0].value);
+        el.getElementsByClassName('order')[0].value = low + 100;
+        el.getElementsByClassName('reordered')[0].value = true;
+    }
+
+    })
+
+</script>
+
+{% endblock %}
