@@ -39,6 +39,8 @@ class User(UserMixin):
         if username is not None:
             user = query_db('select * from users where username = ?',
                             [username], one=True)
+            if user is None:
+                abort(403)
             self.username = username
             self.id = user['id']
             self.display_name = user['display_name']
