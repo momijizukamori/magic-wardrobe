@@ -1,5 +1,5 @@
 from flask import render_template, abort, request, redirect, url_for
-from cosplay import app, make_slug
+from cosplay import app, make_slug, DeleteForm
 from database import query_db, update_db
 from images import save_image
 from about import User
@@ -46,7 +46,7 @@ def tutorial_edit(slug):
     tutorial = get_tutorial(slug)
     if tutorial is None:
         abort(404)
-    if not current_user.username == tutorial['author']['username']:
+    if not current_user.username == tutorial['author'].username:
         abort(401)
     form = TutorialForm(**tutorial)
     if form.validate_on_submit():
@@ -70,3 +70,23 @@ def tutorial_new():
         return redirect(url_for('tutorial_index'))
 
     return render_template('tutorials/form.html', form=form)
+
+
+@app.route('/tutorials/<slug>/delete', methods=['GET', 'POST'])
+@login_required
+def tutorial_delete(slug):
+    # look up the costume and its components in the db
+    tutorial = get_tutorial(slug)
+    if tutorial is None:
+        abort(404)
+
+    if not current_user.username == tutorial['author'].username:
+        abort(401)
+
+    form = DeleteForm()
+    slug = tutorial['slug']
+    if form.validate_on_submit():
+        update_db("delete from tutorials where slug = ?", [slug])
+        return redirect(url_for('tutorial_index'))
+
+    return render_template('delete.html', form=form)
