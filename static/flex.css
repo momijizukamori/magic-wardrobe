@@ -59,7 +59,7 @@ ____________________________________________*/
   width: calc(100vh - 120px);
   height: calc(100vh - 120px);
   background-size: cover;
-  background-position: center;
+  background-position: top center;
   background-color: #ddd;
 
   
