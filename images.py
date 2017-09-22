@@ -58,14 +58,14 @@ def make_thumbnail(image, size=150):
 
     # Rotate depending on orientation.
         if image_orientation == 3:
-            rotated = orig.rotate(180)
+            orig = orig.rotate(180)
         if image_orientation == 6:
-            rotated = orig.rotate(-90)
+            orig = orig.rotate(-90)
         if image_orientation == 8:
-            rotated = orig.rotate(90)
+            orig = orig.rotate(90)
 
     # Save rotated image.
-        rotated.save(image)
+        orig.save(image)
     except:
         pass
 
