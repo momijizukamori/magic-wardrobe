@@ -1,7 +1,7 @@
 import os
 
 from flask import jsonify, request
-from PIL import Image
+from PIL import Image, ExifTags
 from dumper import dump
 from werkzeug.utils import secure_filename
 from cosplay import app, csrf
@@ -49,6 +49,26 @@ def delete_image(image_id, costume_id, type):
 
 def make_thumbnail(image, size=150):
     orig = Image.open(image)
+
+    #If no ExifTags, no rotating needed.
+    try:
+    # Grab orientation value.
+        image_exif = orig._getexif()
+        image_orientation = image_exif[274]
+
+    # Rotate depending on orientation.
+        if image_orientation == 3:
+            rotated = orig.rotate(180)
+        if image_orientation == 6:
+            rotated = orig.rotate(-90)
+        if image_orientation == 8:
+            rotated = orig.rotate(90)
+
+    # Save rotated image.
+        rotated.save(image)
+    except:
+        pass
+
     path, filename = os.path.split(image)
 
     if orig.width > orig.height:
