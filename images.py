@@ -11,9 +11,6 @@ from database import query_db, update_db
 @app.route('/upload', methods=['POST'])
 @csrf.exempt
 def upload():
-    app.logger.debug("hit the uploader")
-    # print 'hit the uploader'
-    print dump(request.form)
     image = request.files['upload']
     type = request.form['type']
 
