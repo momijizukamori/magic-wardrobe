@@ -50,22 +50,26 @@ def delete_image(image_id, costume_id, type):
 def make_thumbnail(image, size=150):
     orig = Image.open(image)
 
-    #If no ExifTags, no rotating needed.
+    # If no ExifTags, no rotating needed.
     try:
+        print "trying to rotate...."
     # Grab orientation value.
         image_exif = orig._getexif()
         image_orientation = image_exif[274]
+        print image_orientation
 
     # Rotate depending on orientation.
         if image_orientation == 3:
-            orig = orig.rotate(180)
+            rotated = orig.transpose(Image.ROTATE_180)
         if image_orientation == 6:
-            orig = orig.rotate(-90)
+            rotated = orig.transpose(Image.ROTATE_270)
         if image_orientation == 8:
-            orig = orig.rotate(90)
+            rotated = orig.transpose(Image.ROTATE_90)
 
     # Save rotated image.
-        orig.save(image)
+        print image
+        rotated.save(image)
+        orig = rotated
     except:
         pass
 
