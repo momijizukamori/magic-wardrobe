@@ -7,16 +7,30 @@
 <a href="new">Add costume >></a>
 {% endif %}
 <div class="costumes">
-    {% for costume in costumes %}
-    {% if costume.cover %}
-    {% set img_url = "/static/uploads/"+ costume.id|string +"/photo/thumbnails/"+ costume.cover %}
+    {% if current_user.is_authenticated %}
+        {% for costume in costumes %}
+        {% if costume.cover %}
+        {% set img_url = "/static/uploads/"+ costume.id|string +"/photo/thumbnails/"+ costume.cover %}
+        {% else %}
+        {% set img_url = "/static/blank.png" %}
+        {% endif %}
+            <div class="cosplay"><a href="{{costume.slug}}"><img src="{{ img_url }}"></a>
+            <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
+        {% else %}
+            No costumes yet!
+        {% endfor %}
     {% else %}
-    {% set img_url = "/static/blank.png" %}
-    {% endif %}
-        <div class="cosplay"><a href="{{costume.slug}}"><img src="{{ img_url }}"></a>
-        <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
-    {% else %}
-    	No costumes yet!
-    {% endfor %}
+    {% for costume in costumes if costume.status != 'draft' %}
+        {% if costume.cover %}
+        {% set img_url = "/static/uploads/"+ costume.id|string +"/photo/thumbnails/"+ costume.cover %}
+        {% else %}
+        {% set img_url = "/static/blank.png" %}
+        {% endif %}
+            <div class="cosplay"><a href="{{costume.slug}}"><img src="{{ img_url }}"></a>
+            <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
+        {% else %}
+        	No costumes yet!
+        {% endfor %}
+    {% endif %}    
 </div>
 {% endblock %}
