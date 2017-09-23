@@ -65,10 +65,7 @@ ____________________________________________*/
 
   
 }
-#photo img {
-  height: 100vh;
-  overflow: hidden;
-}
+
  #content {
   flex-grow: 1;
   padding: 2rem;
@@ -232,6 +229,27 @@ padding: 0.5rem;}
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+}
+
+#expand img:hover {
+      opacity: 1.0;
+    transition: opacity .55s ease-in-out;
+}
+
+#expand img {
+      opacity: 0.4;
+    transition: opacity 1s ease-in-out;
+    vertical-align:bottom;
+    height: 2em;
+    width: 2em;
+    position:absolute;
+    right:2em;
+    bottom:2em;
+    display:none;
+}
+
+.expand #expand img {
+  display:inline-block;
 }
 
 /* costume edit page styling 
