@@ -87,7 +87,7 @@ ____________________________________________*/
 
 /* Medium screens  
 ____________________________________________*/
-@media all and (max-width: 800px) {
+@media all and (orientation: portrait) {
 
 #body {
   width: 100vw;
