@@ -231,6 +231,10 @@ padding: 0.5rem;}
 	justify-content: space-between;
 }
 
+.draft {
+  background-color: #ddd;
+}
+
 #expand img:hover {
       opacity: 1.0;
     transition: opacity .55s ease-in-out;

@@ -14,7 +14,7 @@
         {% else %}
         {% set img_url = "/static/blank.png" %}
         {% endif %}
-            <div class="cosplay"><a href="{{costume.slug}}"><img src="{{ img_url }}"></a>
+            <div class="cosplay {{ costume.status }}"><a href="{{costume.slug}}"><img src="{{ img_url }}"></a>
             <br>{{ costume_title(costume.name, costume.series, costume.variant) }} </div>
         {% else %}
             No costumes yet!
