@@ -2,18 +2,15 @@ import os
 
 from flask import jsonify, request
 from PIL import Image, ExifTags
-from dumper import dump
 from werkzeug.utils import secure_filename
 from cosplay import app, csrf
 from database import query_db, update_db
+from scandir import scandir
 
 
 @app.route('/upload', methods=['POST'])
 @csrf.exempt
 def upload():
-    app.logger.debug("hit the uploader")
-    # print 'hit the uploader'
-    print dump(request.form)
     image = request.files['upload']
     type = request.form['type']
 
@@ -22,6 +19,18 @@ def upload():
     return jsonify(fileName=filename, uploaded=1)
 
 
+@app.cli.command('regen_thumbs')
+def regen_thumbs():
+    """Rebuilds all thumbnails, e.g. if you make a change to style"""
+    thumb_recurse(app.config['UPLOAD_FOLDER'])
+
+
+def thumb_recurse(path):
+    for entry in scandir(path):
+        if entry.is_dir() and not entry.name.startswith('thumbnails'):
+            thumb_recurse(entry.path)
+        elif entry.is_file():
+            make_thumbnail(entry.path)
 def save_image(image, type=None):
     filename = secure_filename(image.filename)
 
@@ -50,7 +59,7 @@ def delete_image(image_id, costume_id, type):
 def make_thumbnail(image, size=150):
     orig = Image.open(image)
 
-    #If no ExifTags, no rotating needed.
+    # If no ExifTags, no rotating needed.
     try:
     # Grab orientation value.
         image_exif = orig._getexif()
@@ -58,14 +67,15 @@ def make_thumbnail(image, size=150):
 
     # Rotate depending on orientation.
         if image_orientation == 3:
-            orig = orig.rotate(180)
+            rotated = orig.transpose(Image.ROTATE_180)
         if image_orientation == 6:
-            orig = orig.rotate(-90)
+            rotated = orig.transpose(Image.ROTATE_270)
         if image_orientation == 8:
-            orig = orig.rotate(90)
+            rotated = orig.transpose(Image.ROTATE_90)
 
     # Save rotated image.
-        orig.save(image)
+        rotated.save(image)
+        orig = rotated
     except:
         pass
 

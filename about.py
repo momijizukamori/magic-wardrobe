@@ -94,7 +94,7 @@ def login():
         user = User(form.username.data)
         if user.is_correct_password(form.password.data):
             login_user(user)
-            print 'logged in!'
+            print('logged in!')
             return redirect(url_for('index'))
 
         else:

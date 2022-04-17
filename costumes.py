@@ -57,13 +57,13 @@ class CostumeForm(FlaskForm):
     photos = FieldList(FormField(PhotoForm))
     references = FieldList(FormField(PhotoForm))
     year = IntegerField('Made In')
-    status = SelectField('Status', choices=[('active', 'active'), ('planned', 'planned'), ('wip', 'in progress'), ('retired', 'retired')])
+    status = SelectField('Status', choices=[('active', 'active'), ('planned', 'planned'), ('wip', 'in progress'), ('retired', 'retired'), ('draft', 'draft')])
 
 
 # Costume pages
 @app.route('/costumes/')
 def costume_index():
-    costumes = query_db("select id, name, series, variant, slug, cover from \
+    costumes = query_db("select id, name, series, variant, slug, cover, status from \
                         costumes order by id desc")
     return render_template('costumes/index.html', costumes=costumes)
 

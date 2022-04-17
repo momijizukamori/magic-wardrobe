@@ -3,6 +3,7 @@
 {% block title %}| {{costume_title(costume.name, costume.series, costume.variant) }}{% endblock %}
 
 {% set photo="/static/uploads/"+ costume.id|string +"/photo/"+ costume.images.photos[0].filename if costume.images.photos[0] %}
+{% set photo_class="expand" %}
 
 {% block content %}
 <h5 class ="title"><img src="/static/images/thread.svg" class="icon"> {{costume_title(costume.name, costume.series, costume.variant) }}</h5>
@@ -49,6 +50,7 @@
 $(function () {
     $( ".image a" ).on( "click", function( event) {
     $("#photo .inner").attr("style", "background-image: url(" + $( this ).attr("href") + ")");
+    $("#expand").attr("href", $( this ).attr("href"));
     event.preventDefault;
     return false;
     });
