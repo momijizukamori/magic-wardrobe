@@ -31,6 +31,7 @@ def thumb_recurse(path):
             thumb_recurse(entry.path)
         elif entry.is_file():
             make_thumbnail(entry.path)
+            
 def save_image(image, type=None):
     filename = secure_filename(image.filename)
 
